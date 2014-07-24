@@ -26,15 +26,20 @@ public class GameScreen implements Screen {
 		if (Gdx.input.isTouched()) {
 			if (Gdx.input.getX() > 0 && Gdx.input.getX() < 640 && Gdx.input.getY() > 0 && Gdx.input.getY() < 480) world.getBear().setPosition(Gdx.input.getX() - 38, 480 - Gdx.input.getY() - 26);
 		}
-		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-			variable = true;
-		}
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) world.fire();
 		batch.begin();
 		world.getBear().draw(batch);
+		if (world.isZap()) world.getZap().draw(batch);
 		for (Barrel barrel: world.getBarrels()) barrel.draw(batch);
+		for (Cloud cloud: world.getClouds()) cloud.draw(batch);
 		batch.end();
 		world.checkBarrel();
+		world.checkCloud();
 		world.moveBarrels();
+		world.moveCloud();
+		world.checkCollision();
+		world.moveZap();
+		if (world.isDead()) game.setScreen(new GameOver(game));
 	}
 
 	@Override
