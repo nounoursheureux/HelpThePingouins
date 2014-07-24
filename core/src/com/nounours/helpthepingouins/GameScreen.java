@@ -25,10 +25,8 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(255, 255, 255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		if (Gdx.input.isTouched()) {
-			if (Gdx.input.getX() > 0 && Gdx.input.getX() < 640 && Gdx.input.getY() > 0 && Gdx.input.getY() < 480) world.getBear().setPosition(Gdx.input.getX() - 38, 480 - Gdx.input.getY() - 26);
-		}
-		if (Gdx.input.isKeyPressed(Keys.D)) world.fire();
+		if (Gdx.input.getX() > 0 && Gdx.input.getX() < 640 && Gdx.input.getY() > 0 && Gdx.input.getY() < 480) world.getBear().setPosition(Gdx.input.getX() - 38, 480 - Gdx.input.getY() - 26);
+		if (Gdx.input.isKeyPressed(Keys.D) && !world.isZap()) world.fire();
 		batch.begin();
 		batch.draw(new Texture(Gdx.files.internal("arctic_background.png")), 0, 0);
 		world.getBear().draw(batch);
