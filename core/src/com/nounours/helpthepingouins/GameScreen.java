@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameScreen implements Screen {
 	
@@ -26,8 +28,9 @@ public class GameScreen implements Screen {
 		if (Gdx.input.isTouched()) {
 			if (Gdx.input.getX() > 0 && Gdx.input.getX() < 640 && Gdx.input.getY() > 0 && Gdx.input.getY() < 480) world.getBear().setPosition(Gdx.input.getX() - 38, 480 - Gdx.input.getY() - 26);
 		}
-		if (Gdx.input.isKeyPressed(Keys.SPACE)) world.fire();
+		if (Gdx.input.isKeyPressed(Keys.D)) world.fire();
 		batch.begin();
+		batch.draw(new Texture(Gdx.files.internal("arctic_background.png")), 0, 0);
 		world.getBear().draw(batch);
 		if (world.isZap()) world.getZap().draw(batch);
 		for (Barrel barrel: world.getBarrels()) barrel.draw(batch);
@@ -39,7 +42,7 @@ public class GameScreen implements Screen {
 		world.moveCloud();
 		world.checkCollision();
 		world.moveZap();
-		if (world.isDead()) game.setScreen(new GameOver(game));
+		if (world.isDead()) gameOver();
 	}
 
 	@Override
@@ -76,6 +79,10 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	void gameOver() {
+		game.setScreen(new GameOver(game, (TimeUtils.millis() - world.getPlayTime()) / 1000));
 	}
 	
 }

@@ -19,6 +19,7 @@ public class World {
 	Iterator<Cloud> iter_clouds;
 	private Boolean dead = false;
 	private Zap zap;
+	private long playTime = TimeUtils.millis();
 	
 	World() {
 		bear = new Bear(0,0, 76, 52);
@@ -66,9 +67,11 @@ public class World {
 				iter_barrels.remove();
 				dead = true;
 			}
-			if (barrel.getBoundingRectangle().overlaps(zap.getBoundingRectangle())) {
+			if (isZap()) { 
+				if (barrel.getBoundingRectangle().overlaps(zap.getBoundingRectangle())) {
 				iter_barrels.remove();
 				zap = null;
+				}
 			}
 		}
 		iter_clouds = clouds.iterator();
@@ -112,5 +115,9 @@ public class World {
 	
 	void moveZap() {
 		if (isZap()) zap.translateX(300 * Gdx.graphics.getDeltaTime());
+	}
+	
+	long getPlayTime() {
+		return playTime;
 	}
 }

@@ -13,9 +13,11 @@ public class GameOver implements Screen {
 	private MyGdxGame game;
 	private BitmapFont font;
 	private SpriteBatch batch;
+	private long playTime;
 
-	GameOver(MyGdxGame game) {
+	GameOver(MyGdxGame game, long playTime) {
 		this.game = game;
+		this.playTime = playTime;
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 		font.setColor(Color.BLACK);
@@ -25,6 +27,7 @@ public class GameOver implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		font.draw(batch, "GAME OVER", 280, 270);
+		font.draw(batch, "Vous avez tenu " + playTime + " secondes", 280, 240);
 		batch.end();
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) game.setScreen(new GameScreen(game));
 	}
