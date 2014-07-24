@@ -15,11 +15,13 @@ public class GameScreen implements Screen {
 	World world;
 	Boolean variable;
 	private int CurFPS = Gdx.graphics.getFramesPerSecond();
+	Texture heart;
 
 	GameScreen(MyGdxGame game) {
 		this.game = game;
 		world = new World();
 		batch = new SpriteBatch();
+		heart = new Texture(Gdx.files.internal("heart.png"));
 	}
 	
 	@Override
@@ -34,10 +36,12 @@ public class GameScreen implements Screen {
 		if (Gdx.input.isKeyPressed(Keys.D) && !world.isZap()) world.fire();
 		batch.begin();
 		batch.draw(new Texture(Gdx.files.internal("arctic_background.png")), 0, 0);
+		for (int i = 0; i < world.getBear().getHealth(); i++) batch.draw(heart, 20 + 90 * i, 400);
 		world.getBear().draw(batch);
 		if (world.isZap()) world.getZap().draw(batch);
 		for (Barrel barrel: world.getBarrels()) barrel.draw(batch);
 		for (Cloud cloud: world.getClouds()) cloud.draw(batch);
+		for (Fish fish: world.getFishs()) fish.draw(batch);
 		batch.end();
 		world.checkBarrel();
 		world.checkCloud();
@@ -45,7 +49,7 @@ public class GameScreen implements Screen {
 		world.moveCloud();
 		world.checkCollision();
 		world.moveZap();
-		if (world.isDead()) gameOver();
+		if (world.getBear().getHealth() <= 0) gameOver();
 	}
 
 	@Override

@@ -16,20 +16,24 @@ public class World {
 	private long lastCloud = TimeUtils.millis();
 	private Array<Barrel> barrels;
 	private Array<Cloud> clouds;
+	private Array<Fish> fishs;
 	Iterator<Barrel> iter_barrels;
 	Iterator<Cloud> iter_clouds;
+	Iterator<Fish> iter_fishs;
 	private Boolean dead = false;
 	private Zap zap;
 	private long playTime = TimeUtils.millis();
-	private Texture texture_barrel, texture_cloud;
+	private Texture texture_barrel, texture_cloud, texture_fish;
 
 	
 	World() {
 		bear = new Bear(0,0, 76, 52);
 		barrels = new Array<Barrel>();
 		clouds = new Array<Cloud>();
+		fishs = new Array<Fish>();
 		texture_barrel = new Texture(Gdx.files.internal("barrel.png"));
 		texture_cloud = new Texture(Gdx.files.internal("cloud.png"));
+		texture_fish = new Texture(Gdx.files.internal("fish.png"));
 	}
 	
 	Bear getBear() {
@@ -70,21 +74,32 @@ public class World {
 			Barrel barrel = iter_barrels.next();
 			if (barrel.getBoundingRectangle().overlaps(bear.getBoundingRectangle())) {
 				iter_barrels.remove();
-				dead = true;
+				bear.decHealth();
 			}
 			if (isZap()) { 
 				if (barrel.getBoundingRectangle().overlaps(zap.getBoundingRectangle())) {
-				iter_barrels.remove();
 				zap = null;
+				checkFish((int)barrel.getX(), (int)barrel.getY());
+				iter_barrels.remove();
 				}
 			}
+			if (barrel.getX() < 0) iter_barrels.remove();
 		}
 		iter_clouds = clouds.iterator();
 		while (iter_clouds.hasNext()) {
 			Cloud cloud = iter_clouds.next();
 			if (cloud.getBoundingRectangle().overlaps(bear.getBoundingRectangle())) {
 				iter_clouds.remove();
-				dead = true;
+				bear.decHealth();
+			}
+			if (cloud.getX() < 0) iter_clouds.remove();
+		}
+		iter_fishs = fishs.iterator();
+		while (iter_fishs.hasNext()) {
+			Fish fish = iter_fishs.next();
+			if (fish.getBoundingRectangle().overlaps(bear.getBoundingRectangle())) {
+				bear.eatFish();
+				iter_fishs.remove();
 			}
 		}
 	}
@@ -97,7 +112,7 @@ public class World {
 		iter_clouds = clouds.iterator();
 		while (iter_clouds.hasNext()) {
 			Cloud cloud = iter_clouds.next();
-			cloud.translateX(-500 * Gdx.graphics.getDeltaTime());
+			cloud.translateX(-200 * Gdx.graphics.getDeltaTime());
 		}
 	}
 	
@@ -119,10 +134,24 @@ public class World {
 	}
 	
 	void moveZap() {
-		if (isZap()) zap.translateX(300 * Gdx.graphics.getDeltaTime());
+		if (isZap()) {
+			zap.translateX(300 * Gdx.graphics.getDeltaTime());
+			if (zap.getX() > 640) zap = null;
+		}
 	}
 	
 	long getPlayTime() {
 		return playTime;
+	}
+	
+	void checkFish(int x, int y) {
+		if (MathUtils.random(100) > 66) {
+			Fish fish = new Fish(texture_fish, x, y);
+			fishs.add(fish);
+		}
+	}
+	
+	Array<Fish> getFishs() {
+		return fishs;
 	}
 }
