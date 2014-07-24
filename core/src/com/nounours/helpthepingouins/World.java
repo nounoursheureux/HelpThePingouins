@@ -3,6 +3,7 @@ package com.nounours.helpthepingouins;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -20,11 +21,15 @@ public class World {
 	private Boolean dead = false;
 	private Zap zap;
 	private long playTime = TimeUtils.millis();
+	private Texture texture_barrel, texture_cloud;
+
 	
 	World() {
 		bear = new Bear(0,0, 76, 52);
 		barrels = new Array<Barrel>();
 		clouds = new Array<Cloud>();
+		texture_barrel = new Texture(Gdx.files.internal("barrel.png"));
+		texture_cloud = new Texture(Gdx.files.internal("cloud.png"));
 	}
 	
 	Bear getBear() {
@@ -33,7 +38,7 @@ public class World {
 	
 	void checkBarrel() {
 		if (TimeUtils.millis() - lastBarrel > 500) {
-			Barrel barrel = new Barrel (640, MathUtils.random(480));
+			Barrel barrel = new Barrel (640, MathUtils.random(480), texture_barrel);
 			barrels.add(barrel);
 			lastBarrel = TimeUtils.millis();
 		}
@@ -41,7 +46,7 @@ public class World {
 	
 	void checkCloud() {
 		if (TimeUtils.millis() - lastCloud > 1000) {
-			Cloud cloud = new Cloud(640, MathUtils.random(480));
+			Cloud cloud = new Cloud(640, MathUtils.random(480), texture_cloud);
 			clouds.add(cloud);
 			lastCloud = TimeUtils.millis();
 		}

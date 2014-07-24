@@ -14,6 +14,7 @@ public class GameScreen implements Screen {
 	SpriteBatch batch;
 	World world;
 	Boolean variable;
+	private int CurFPS = Gdx.graphics.getFramesPerSecond();
 
 	GameScreen(MyGdxGame game) {
 		this.game = game;
@@ -25,6 +26,10 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(255, 255, 255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		if (CurFPS != Gdx.graphics.getFramesPerSecond()) {
+			Gdx.graphics.setTitle(String.valueOf(Gdx.graphics.getFramesPerSecond())); 
+			CurFPS = Gdx.graphics.getFramesPerSecond();
+		}
 		if (Gdx.input.getX() > 0 && Gdx.input.getX() < 640 && Gdx.input.getY() > 0 && Gdx.input.getY() < 480) world.getBear().setPosition(Gdx.input.getX() - 38, 480 - Gdx.input.getY() - 26);
 		if (Gdx.input.isKeyPressed(Keys.D) && !world.isZap()) world.fire();
 		batch.begin();

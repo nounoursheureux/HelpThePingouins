@@ -1,5 +1,6 @@
 package com.nounours.helpthepingouins.desktop;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.nounours.helpthepingouins.MyGdxGame;
@@ -9,7 +10,6 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 640;
 		config.height = 480;
-		config.title = "Save the Bear";
 		new LwjglApplication(new MyGdxGame(), config);
 	}
 }
