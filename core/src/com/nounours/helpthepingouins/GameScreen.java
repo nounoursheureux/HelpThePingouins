@@ -15,13 +15,12 @@ public class GameScreen implements Screen {
 	World world;
 	Boolean variable;
 	private int CurFPS = Gdx.graphics.getFramesPerSecond();
-	Texture heart, background;
+	Texture background;
 
 	GameScreen(MyGdxGame game) {
 		this.game = game;
 		world = new World();
 		batch = new SpriteBatch();
-		heart = new Texture(Gdx.files.internal("heart.png"));
 		background = new Texture(Gdx.files.internal("arctic_background.png"));
 	}
 	
@@ -37,7 +36,6 @@ public class GameScreen implements Screen {
 		if (Gdx.input.isKeyPressed(Keys.D) && !world.isZap()) world.fire();
 		batch.begin();
 		batch.draw(background, 0, 0);
-		for (int i = 0; i < world.getBear().getHealth(); i++) batch.draw(heart, 20 + 90 * i, 400);
 		world.getBear().draw(batch);
 		if (world.isZap()) world.getZap().draw(batch);
 		for (Barrel barrel: world.getBarrels()) barrel.draw(batch);

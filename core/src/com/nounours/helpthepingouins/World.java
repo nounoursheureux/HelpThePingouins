@@ -74,7 +74,8 @@ public class World {
 			Barrel barrel = iter_barrels.next();
 			if (barrel.getBoundingRectangle().overlaps(bear.getBoundingRectangle())) {
 				iter_barrels.remove();
-				bear.decHealth();
+				if (bear.isFished()) bear.getNormal();
+				else bear.decHealth();
 			}
 			if (isZap()) { 
 				if (barrel.getBoundingRectangle().overlaps(zap.getBoundingRectangle())) {
@@ -90,8 +91,8 @@ public class World {
 			Cloud cloud = iter_clouds.next();
 			if (cloud.getBoundingRectangle().overlaps(bear.getBoundingRectangle())) {
 				iter_clouds.remove();
-				bear.decHealth();
-			}
+				if (bear.isFished()) bear.getNormal();
+				else bear.decHealth();			}
 			if (cloud.getX() < 0) iter_clouds.remove();
 		}
 		iter_fishs = fishs.iterator();
@@ -116,12 +117,20 @@ public class World {
 		}
 	}
 	
+	void moveFish() {
+		iter_fishs = fishs.iterator();
+		while (iter_fishs.hasNext()) {
+			Fish fish = iter_fishs.next();
+			fish.translateX(-300 * Gdx.graphics.getDeltaTime());
+		}
+	}
+	
 	Array<Cloud> getClouds() {
 		return clouds;
 	}
 	
 	void fire() {
-		zap = new Zap(bear.getX(), bear.getY());
+		zap = new Zap(bear.getX() + bear.getWidth() - 20, bear.getY());
 	}
 	
 	Boolean isZap() {
@@ -145,7 +154,7 @@ public class World {
 	}
 	
 	void checkFish(int x, int y) {
-		if (MathUtils.random(100) > 66) {
+		if (MathUtils.random(100) > 80) {
 			Fish fish = new Fish(texture_fish, x, y);
 			fishs.add(fish);
 		}
