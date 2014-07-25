@@ -28,6 +28,7 @@ public class GameOver implements Screen {
 		batch.begin();
 		font.draw(batch, "GAME OVER", 280, 270);
 		font.draw(batch, "Vous avez tenu " + playTime + " secondes", 280, 240);
+		font.draw(batch, "Appuyez sur Espace pour rejouer", 280, 210);
 		batch.end();
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) game.setScreen(new GameScreen(game));
 	}
