@@ -3,6 +3,7 @@ package com.nounours.helpthepingouins;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
@@ -24,6 +25,7 @@ public class World {
 	private Zap zap;
 	private long playTime = TimeUtils.millis();
 	private Texture texture_barrel, texture_cloud, texture_fish;
+	private Sound fire_sound, fish_sound, explosion_sound;
 
 	
 	World() {
@@ -34,6 +36,9 @@ public class World {
 		texture_barrel = new Texture(Gdx.files.internal("barrel.png"));
 		texture_cloud = new Texture(Gdx.files.internal("cloud.png"));
 		texture_fish = new Texture(Gdx.files.internal("fish.png"));
+		fire_sound = Gdx.audio.newSound(Gdx.files.internal("Laser_Shoot.wav"));
+		fish_sound = Gdx.audio.newSound(Gdx.files.internal("Powerup.wav"));
+		explosion_sound = Gdx.audio.newSound(Gdx.files.internal("Explosion.wav"));
 	}
 	
 	Bear getBear() {
@@ -79,6 +84,7 @@ public class World {
 			}
 			if (isZap()) { 
 				if (barrel.getBoundingRectangle().overlaps(zap.getBoundingRectangle())) {
+				explosion_sound.play(0.1f);
 				zap = null;
 				checkFish((int)barrel.getX(), (int)barrel.getY());
 				iter_barrels.remove();
@@ -99,6 +105,7 @@ public class World {
 		while (iter_fishs.hasNext()) {
 			Fish fish = iter_fishs.next();
 			if (fish.getBoundingRectangle().overlaps(bear.getBoundingRectangle())) {
+				fish_sound.play(0.1f);
 				bear.eatFish();
 				iter_fishs.remove();
 			}
@@ -130,6 +137,7 @@ public class World {
 	}
 	
 	void fire() {
+		fire_sound.play(0.1f);
 		zap = new Zap(bear.getX() + bear.getWidth() - 20, bear.getY());
 	}
 	

@@ -9,6 +9,9 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 640;
 		config.height = 480;
+		config.vSyncEnabled = false;
+		config.backgroundFPS = 0;
+		config.foregroundFPS = 0;
 		new LwjglApplication(new MyGdxGame(), config);
 	}
 }
