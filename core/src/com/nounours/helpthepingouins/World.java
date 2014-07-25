@@ -90,7 +90,7 @@ public class World {
 				iter_barrels.remove();
 				}
 			}
-			if (barrel.getX() < 0) iter_barrels.remove();
+			if (barrel.getX() < 0 - barrel.getWidth()) iter_barrels.remove();
 		}
 		iter_clouds = clouds.iterator();
 		while (iter_clouds.hasNext()) {
@@ -99,7 +99,7 @@ public class World {
 				iter_clouds.remove();
 				if (bear.isFished()) bear.getNormal();
 				else bear.decHealth();			}
-			if (cloud.getX() < 0) iter_clouds.remove();
+			if (cloud.getX() < 0 - cloud.getWidth()) iter_clouds.remove();
 		}
 		iter_fishs = fishs.iterator();
 		while (iter_fishs.hasNext()) {
